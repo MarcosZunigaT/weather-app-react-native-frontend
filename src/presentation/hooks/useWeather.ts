@@ -1,16 +1,32 @@
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useContext } from "react";
 import type { UseWeatherResult } from "../types/UseWeatherResultProps";
 import { WeatherData } from "../../domain/entities/WeatherData";
-import { GetWeatherByCityUseCase } from "../../application/useCases/GetWeatherByCityUseCase";
-import { WeatherRepositoryImpl } from "../../infraestructure/repositories/WeatherRepositoryImpl";
-import AlertHandler from "../utils/alertHandler";
+import type { GetWeatherByCityUseCase } from "../../application/useCases/GetWeatherByCityUseCase";
+import { useWeatherContext } from "../context/WeatherContext";
+import AlertHandler from "../utils/AlertHandler";
 
-const weatherRepository = new WeatherRepositoryImpl();
-const getWeatherByCityUseCase = new GetWeatherByCityUseCase(weatherRepository);
-
-const useWeather = (): UseWeatherResult => {
+// El hook toma opcionalmente un use case inyectado; si no se pasa, intenta
+// obtenerlo desde el `WeatherProvider` vía Context.
+const useWeather = (
+  injectedGetWeatherByCityUseCase?: GetWeatherByCityUseCase
+): UseWeatherResult => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const context = (() => {
+    try {
+      return useWeatherContext();
+    } catch {
+      return undefined as any;
+    }
+  })();
+
+  const getWeatherByCityUseCase =
+    injectedGetWeatherByCityUseCase ?? context?.getWeatherByCityUseCase;
+
+  if (!getWeatherByCityUseCase) {
+    AlertHandler.showError("Error al inyectar dependencia");
+  }
 
   const getWeatherData = useCallback(
     async (cityName: string): Promise<WeatherData | null> => {
@@ -43,7 +59,7 @@ const useWeather = (): UseWeatherResult => {
         setIsLoading(false);
       }
     },
-    []
+    [getWeatherByCityUseCase]
   );
 
   const result = useMemo<UseWeatherResult>(
