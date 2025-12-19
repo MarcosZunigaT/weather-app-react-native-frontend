@@ -11,19 +11,19 @@ const WeatherCard: React.FC<WeatherCardProps> = ({
 }) => {
   const cards = [
     {
-      label: "Temperature",
+      label: "Temperatura actual",
       value: `${temp} °C`,
       icon: "🌡️",
       style: weatherCardStyle.cardToneWarm,
     },
     {
-      label: "Humidity",
-      value: `Humidity: ${humidity} %`,
+      label: "Humedad",
+      value: `${humidity} %`,
       icon: "💧",
       style: weatherCardStyle.cardToneCool,
     },
     {
-      label: "Clima",
+      label: "Descripción del clima",
       value: description,
       icon: "☁️",
       style: weatherCardStyle.cardToneNeutral,

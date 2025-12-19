@@ -1,9 +1,7 @@
-import WeatherDataProps from "./WeatherDataProps";
+import { WeatherData } from "../../domain/entities/WeatherData";
 
 export type UseWeatherResult = {
-    weatherData: WeatherDataProps | null;
+    weatherData: WeatherData | null;
     isLoading: boolean;
-    getWeatherData: (cityName: string) => Promise<WeatherDataProps | undefined>;
+    getWeatherData: (cityName: string) => Promise<WeatherData | null>;
 };
-
-export default UseWeatherResult;
