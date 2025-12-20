@@ -35,6 +35,7 @@ describe("WeatherScreen (prueba UI simulada)", () => {
     const result = await mockGetWeatherData.mock.results[0].value;
 
     expect(mockGetWeatherData).toHaveBeenCalledWith("Managua");
+    expect(input.props.value).toBe("Managua");
     expect(result).toEqual(mockWeatherData);
     expect(result).toBeInstanceOf(WeatherData);
     expect(mockGetWeatherData).toHaveBeenCalledTimes(1);
