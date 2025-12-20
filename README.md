@@ -61,6 +61,10 @@ Comandos útiles
 npm install
 ```
 
+```bash
+npx expo install expo-router
+```
+
 - Ejecutar la app en desarrollo (Expo):
 
 ```bash
@@ -86,6 +90,12 @@ npx jest
 
 ```bash
 npx jest __tests__/WeatherUI.test.tsx --runInBand
+```
+
+- Ejecutar una prueba coverage:
+
+```bash
+npx jest coverage
 ```
 
 Archivos de interés

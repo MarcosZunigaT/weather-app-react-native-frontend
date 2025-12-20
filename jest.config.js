@@ -10,7 +10,7 @@ module.exports = {
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   coveragePathIgnorePatterns: [
     "/node_modules/",
-    "<rootDir>/src/components/WeatherCard.tsx",
+    "<rootDir>/src/presentation/components/WeatherCard.tsx",
     "<rootDir>/src/domain/entities/WeatherData.ts",
   ],
 };
