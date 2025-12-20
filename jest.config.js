@@ -1,9 +1,11 @@
 /** @type {import('jest').Config} */
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
+  preset: 'react-native',
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
+    '^.+\\.[jt]sx?$': 'babel-jest',
   },
+  transformIgnorePatterns: [
+    'node_modules/(?!(react-native|@react-native|@testing-library)/)',
+  ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 };

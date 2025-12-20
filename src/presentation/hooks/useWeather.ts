@@ -3,7 +3,7 @@ import type { UseWeatherResult } from "../types/UseWeatherResultProps";
 import { WeatherData } from "../../domain/entities/WeatherData";
 import type { GetWeatherByCityUseCase } from "../../application/useCases/GetWeatherByCityUseCase";
 import { useWeatherContext } from "../context/WeatherContext";
-import AlertHandler from "../utils/AlertHandler";
+import AlertHandler from "../utils/alertHandler";
 
 // El hook toma opcionalmente un use case inyectado; si no se pasa, intenta
 // obtenerlo desde el `WeatherProvider` vía Context.

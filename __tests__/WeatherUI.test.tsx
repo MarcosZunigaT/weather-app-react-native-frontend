@@ -1,16 +1,17 @@
 import React, { act, useState } from "react";
-import renderer from "react-test-renderer";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import { WeatherData } from "../src/domain/entities/WeatherData";
+import WeatherScreen from "../src/presentation/screens/WeatherScreen";
 
 const mockWeatherData = new WeatherData("Managua", 30, 70, "Soleado");
-const getWeatherDataMock = jest.fn().mockResolvedValue(mockWeatherData);
+const mockGetWeatherData = jest.fn().mockResolvedValue(mockWeatherData);
 
 jest.mock("../src/presentation/hooks/useWeather", () => ({
   __esModule: true,
   default: () => ({
     weatherData: null,
     isLoading: false,
-    getWeatherData: getWeatherDataMock,
+    getWeatherData: mockGetWeatherData,
   }),
 }));
 
@@ -19,50 +20,23 @@ describe("WeatherScreen (prueba UI simulada)", () => {
     jest.clearAllMocks();
   });
 
-  function TestScreen() {
-    const [city, setCity] = useState("");
-    const useWeather = require("../src/presentation/hooks/useWeather")
-      .default as any;
-    const { getWeatherData } = useWeather();
+  it("Al escribir ciudad y presionar botón llama getWeatherData y retorna WeatherData", async () => {
+    render(<WeatherScreen />);
 
-    return React.createElement(
-      "div",
-      null,
-      React.createElement("input", {
-        placeholder: "Ingresa el nombre de la ciudad",
-        value: city,
-        onChange: (e: any) => setCity(e.target.value),
-      }),
-      React.createElement(
-        "button",
-        { onClick: () => getWeatherData(city) },
-        "Consultar clima"
-      )
+    const input = await screen.findByPlaceholderText(
+      "Ingresa el nombre de la ciudad"
     );
-  }
+    const button = await screen.findByText("Consultar clima");
 
-  it("al escribir ciudad y presionar botón llama getWeatherData y retorna WeatherData", async () => {
-    let tree: any;
-    await act(async () => {
-      tree = renderer.create(React.createElement(TestScreen));
-    });
+    fireEvent.changeText(input, "Managua");
 
-    const root = tree.root;
-    const input = root.findByType("input");
-    const button = root.findByType("button");
+    fireEvent.press(button);
 
-    await act(async () => {
-      input.props.onChange({ target: { value: "Managua" } });
-    });
+    const result = await mockGetWeatherData.mock.results[0].value;
 
-    // Simular click
-    let result: any;
-    await act(async () => {
-      result = await button.props.onClick();
-    });
-
-    expect(getWeatherDataMock).toHaveBeenCalledWith("Managua");
-    expect(result).toBeInstanceOf(WeatherData);
+    expect(mockGetWeatherData).toHaveBeenCalledWith("Managua");
     expect(result).toEqual(mockWeatherData);
+    expect(result).toBeInstanceOf(WeatherData);
+    expect(mockGetWeatherData).toHaveBeenCalledTimes(1);
   });
 });
