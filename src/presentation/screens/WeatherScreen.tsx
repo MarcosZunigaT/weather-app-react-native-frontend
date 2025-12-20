@@ -13,6 +13,7 @@ import BaseInput from "../components/BaseInput";
 import BaseButton from "../components/BaseButton";
 import useWeather from "../hooks/useWeather";
 import WeatherCard from "../components/WeatherCard";
+import WeatherDataProps from "../types/WeatherCardProps";
 
 const WeatherScreen: React.FC = () => {
   const [cityName, setCityName] = useState("");
@@ -43,7 +44,7 @@ const WeatherScreen: React.FC = () => {
           />
         )}
         {isLoading && <ActivityIndicator style={weatherScreenStyles.loader} />}
-        {weatherData && !isLoading && <WeatherCard {...weatherData} />}
+        {weatherData && !isLoading && <WeatherCard {...weatherData as WeatherDataProps} />}
         <StatusBar/>
       </View>
     </ScrollView>

@@ -1,14 +1,14 @@
 export class WeatherData {
-  name: string;
-  temp: number;
-  humidity: number;
-  description: string;
+  name: string | null;
+  temp: number | null;
+  humidity: number | null;
+  description: string | null;
 
   constructor(
-    name: string,
-    temp: number,
-    humidity: number,
-    description: string
+    name: string | null,
+    temp: number | null,
+    humidity: number | null,
+    description: string | null
   ) {
     this.name = name;
     this.temp = temp;
@@ -17,19 +17,33 @@ export class WeatherData {
   }
 
   static fromJSON(obj: {
-    name: string;
-    temp: number;
-    humidity: number;
-    description: string;
+    name?: string | null;
+    temp?: number | null;
+    humidity?: number | null;
+    description?: string | null;
   }): WeatherData {
-    return new WeatherData(obj.name, obj.temp, obj.humidity, obj.description);
+    const name = obj.name === undefined ? null : obj.name;
+    const temp = obj.temp === undefined ? null : obj.temp;
+    const humidity = obj.humidity === undefined ? null : obj.humidity;
+    const description = obj.description === undefined ? null : obj.description;
+
+    return new WeatherData(name, temp, humidity, description);
+  }
+
+  isEmpty(): boolean {
+    return (
+      this.name === null ||
+      this.temp === null ||
+      this.humidity === null ||
+      this.description === null
+    );
   }
 
   toJSON(): {
-    name: string;
-    temp: number;
-    humidity: number;
-    description: string;
+    name: string | null;
+    temp: number | null;
+    humidity: number | null;
+    description: string | null;
   } {
     return {
       name: this.name,

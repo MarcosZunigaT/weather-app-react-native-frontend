@@ -40,13 +40,7 @@ const useWeather = (
           return null;
         }
         const data = await getWeatherByCityUseCase.execute(cityName);
-        if (
-          data !== null &&
-          (data.description === undefined ||
-            data.humidity === undefined ||
-            data.temp === undefined ||
-            data.name === undefined)
-        ) {
+        if (data === null) {
           AlertHandler.showError("Ciudad no encontrada.");
           return null;
         }
